@@ -1,10 +1,9 @@
-import * as A from 'fp-ts/lib/Array';
-import * as O from 'fp-ts/lib/Option';
-import * as E from 'fp-ts/lib/Either';
-import * as fs from 'fs';
+import A from 'fp-ts/lib/Array';
+import O from 'fp-ts/lib/Option';
+import E from 'fp-ts/lib/Either';
+import fs from 'fs';
 import path from 'path';
 import yaml from 'js-yaml';
-
 import { identity, pipe } from 'fp-ts/lib/function';
 
 const supportedExtension = ['yml', 'yaml', 'json'] as const;
@@ -91,4 +90,7 @@ function readFiles(dirPath: string) {
   );
 }
 
+type Result = ReturnType<typeof readFiles>;
+
 export default readFiles;
+export { type Result };
