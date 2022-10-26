@@ -5,7 +5,7 @@ import * as fs from 'fs';
 import path from 'path';
 import yaml from 'js-yaml';
 
-import { flow, identity, pipe } from 'fp-ts/lib/function';
+import { identity, pipe } from 'fp-ts/lib/function';
 
 const supportedExtension = ['yml', 'yaml', 'json'] as const;
 type SupportedExtension = typeof supportedExtension[number];
