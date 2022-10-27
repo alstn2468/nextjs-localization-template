@@ -1,5 +1,5 @@
 import { type GetStaticProps } from 'next';
-import { getAllLocales } from '~/utils/translation';
+import { getAllLocales } from '~/utils/localization';
 import useRedirectLocalePage from '~/hooks/useRedirectLocalePage';
 
 type Props = {
