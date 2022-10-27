@@ -99,7 +99,7 @@ const getStaticPaths: GetStaticPaths = async () => {
       getFileNames,
       map((fileName) => ({ params: { slug: fileName } })),
     ),
-    fallback: true,
+    fallback: false,
   };
 };
 
@@ -121,7 +121,8 @@ const getStaticProps: GetStaticProps<Props, Params> = async (context) => {
 
     throw new Error('Error: [locale].tsx translationData is left.');
   }
-  throw new Error('Error: [locale].tsx getStaticProps something wrong.');
+
+  throw new Error('Error: [locale].tsx params.slug is undefined.');
 };
 
 export { getStaticPaths, getStaticProps };
