@@ -1,4 +1,3 @@
-import { Fragment } from 'react';
 import { map } from 'fp-ts/lib/Array';
 import { pipe } from 'fp-ts/lib/function';
 import { isRight } from 'fp-ts/lib/Either';
@@ -100,7 +99,7 @@ const getStaticPaths: GetStaticPaths = async () => {
       getFileNames,
       map((fileName) => ({ params: { slug: fileName } })),
     ),
-    fallback: false,
+    fallback: true,
   };
 };
 
