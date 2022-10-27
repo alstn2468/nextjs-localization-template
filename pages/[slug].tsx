@@ -10,6 +10,7 @@ import {
   getTranslationFolder,
   readFileByPredicate,
 } from '../scripts/files';
+import { useLocale, useTranslation } from '../context/L10nContext';
 
 interface Params extends ParsedUrlQuery {
   slug: string,
@@ -17,12 +18,14 @@ interface Params extends ParsedUrlQuery {
 
 interface Props {
   locale: string,
-  translationData: Record<string, string>,
+  translations: Record<string, string>,
 }
 
 const TranslatedPage = (props: Props) => {
+  const t = useTranslation();
+  console.log(props);
   return (
-    <Fragment>{JSON.stringify(props)}</Fragment>
+    <Fragment>{t('hello')}</Fragment>
   );
 };
 
@@ -42,14 +45,14 @@ const getStaticProps: GetStaticProps<Props, Params> = async (context) => {
 
   if (params?.slug) {
     const { slug } = params;
-    const translationData = readFileByPredicate(
+    const translations = readFileByPredicate(
       getTranslationFolder(import.meta.url),
       (filePath) => filePath.includes(slug),
     );
 
-    if (isRight(translationData)) {
+    if (isRight(translations)) {
       return {
-        props: { locale: slug, translationData: translationData.right },
+        props: { locale: slug, translations: translations.right },
       };
     }
 
