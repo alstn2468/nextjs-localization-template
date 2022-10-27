@@ -1,2 +1,15 @@
-hello: 안녕!
-onlyKo: 한국어만
+og-title: 'Next 앱 만들기'
+og-description: 'Next 앱 생성으로 생성됨'
+title: '<a href="https://nextjs.org">Next.js</a>에 오신 것을 환영합니다!'
+description: '편집하여 시작'
+page-file-path: 'pages/index.tsx'
+documentation-title: '문서'
+documentation-description: 'Next.js 기능 및 API에 대한 자세한 정보를 확인하십시오.'
+learn-title: '배우기'
+learn-description: '퀴즈가 있는 대화형 코스에서 Next.js에 대해 알아보십시오!'
+examples-title: '예시'
+examples-description: '보일러 플레이트 예시 Next.js 프로젝트를 찾아 배포합니다.'
+deploy-title: '배포'
+deploy-description: 'Vercel을 사용하여 Next.js 사이트를 공개 URL에 즉시 배포하십시오.'
+footer-powered-by: '전원 공급 장치'
+only-ko: '한국어에만 있는 키'
