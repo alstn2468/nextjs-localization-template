@@ -1,56 +1,34 @@
 import * as A from 'fp-ts/lib/Array';
-import * as E from 'fp-ts/lib/Either';
-import * as R from 'fp-ts/lib/Record';
 import { pipe } from 'fp-ts/lib/function';
+import { getObjectKeys, mergeEitherObjects } from '~/utils/object';
 
 import { type Result } from './files';
 
-function mergeEitherObjects(
-  objects: E.Either<Error, Record<string, string>>[]
-) {
-  return pipe(
-    objects,
-    A.reduce<Result[number], Record<string, string>>({}, (acc, object) =>
-      pipe(
-        object,
-        E.match(
-          () => acc,
-          (value) => ({ ...acc, ...value })
-        )
-      )
-    )
-  );
-}
-
-function getObjectKeys(object: Record<string, string>) {
-  return R.keys(object);
-}
-
-function getTranslationKeyTypes(keys: string[]) {
+function getTranslationKeyUnionTypes(keys: string[]) {
   return pipe(
     keys,
     A.reduce('', (acc, key) => acc + `\t| "${key}"\n`)
   );
 }
 
-function getTranslationKeyTypeString(keys: string[]) {
+function getTranslationKeyTypeFileText(keys: string[]) {
   return `/* eslint-disable */
     // @ts-ignore
     export {};
     declare global {
       type TransltaionKeys =
-      ${getTranslationKeyTypes(keys)}
+      ${getTranslationKeyUnionTypes(keys)}
     }
   `;
 }
 
-function getTranslationKeyType(readFileResults: Result) {
+function generateKeyUnionTextFromFiles(readFileResults: Result) {
   return pipe(
     readFileResults,
     mergeEitherObjects,
     getObjectKeys,
-    getTranslationKeyTypeString
+    getTranslationKeyTypeFileText
   );
 }
 
-export { getTranslationKeyType };
+export { generateKeyUnionTextFromFiles };

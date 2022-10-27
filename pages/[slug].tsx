@@ -1,13 +1,8 @@
-import { map } from 'fp-ts/lib/Array';
-import { pipe } from 'fp-ts/lib/function';
+
 import { isRight } from 'fp-ts/lib/Either';
 import { type ParsedUrlQuery } from 'querystring';
 import { type GetStaticProps, type GetStaticPaths } from 'next';
-import {
-  getFileNames,
-  getTranslationFolderPath,
-  readFileByPredicate,
-} from '~/scripts/files';
+import { getAllPaths, getTranslations } from '~/utils/localization';
 import styles from '~/styles/Page.module.css';
 import OpenGraph from '~/components/OpenGraph';
 import Title from '~/components/Title';
@@ -43,11 +38,7 @@ const TranslatedPage = (props: Props) => {
 
 const getStaticPaths: GetStaticPaths = async () => {
   return {
-    paths: pipe(
-      getTranslationFolderPath(import.meta.url),
-      getFileNames,
-      map((fileName) => ({ params: { slug: fileName } })),
-    ),
+    paths: getAllPaths(),
     fallback: false,
   };
 };
@@ -56,23 +47,16 @@ const getStaticProps: GetStaticProps<GetStaticPropsResult, Params> = async (
   context,
 ) => {
   const { params } = context;
-
   if (params?.slug) {
     const { slug } = params;
-    const translations = readFileByPredicate(
-      getTranslationFolderPath(import.meta.url),
-      (filePath) => filePath.includes(slug),
-    );
-
+    const translations = getTranslations(slug);
     if (isRight(translations)) {
       return {
         props: { locale: slug, translations: translations.right },
       };
     }
-
     throw new Error('Error: [locale].tsx translationData is left.');
   }
-
   throw new Error('Error: [locale].tsx params.slug is undefined.');
 };
 

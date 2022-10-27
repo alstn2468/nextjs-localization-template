@@ -21,11 +21,9 @@ function useRedirectLocalePage(locales: string[]) {
   useRedirect(() => {
     const [navigatorLocale] = window.navigator.language.split('-');
     const targetLocale = getTargetLocale(locales, navigatorLocale);
-
     if (isNone(targetLocale)) {
       throw new Error('Error: targetLocale is None.');
     }
-
     return targetLocale.value;
   });
 }

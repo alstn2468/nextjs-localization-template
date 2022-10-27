@@ -19,7 +19,6 @@ const useL10nContext = () => {
 const useLocale = () => useL10nContext().locale;
 const useTranslation = () => useL10nContext().t;
 
-
 function L10nContextProvider(props: PropsWithChildren<{ value: L10nContextType }>) {
   const { children, value } = props;
   return (

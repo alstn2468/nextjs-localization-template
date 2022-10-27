@@ -60,40 +60,46 @@ function getSupportedFilePathsWithExtension(dirPath: string) {
   }[];
 }
 
-function getParserByExt(ext: SupportedExtension) {
+function getParserByFileExtension(ext: SupportedExtension) {
   if (ext === 'json') {
     return JSON.parse;
   }
   if (ext === 'yaml' || ext === 'yml') {
     return yaml.load;
   }
-  throw new Error(`⚠️ Unsupported file extension ${ext}`);
+  throw new Error(`Error: Unsupported file extension ${ext}`);
 }
 
-function readFileByExtension(file: {
+function readTranslationFileByExtension(file: {
   filePath: string;
   ext: SupportedExtension;
 }) {
   const { filePath, ext } = file;
   const content = fs.readFileSync(filePath, { encoding: 'utf-8' });
-  const parser = getParserByExt(ext);
+  const parser = getParserByFileExtension(ext);
   return E.tryCatch<Error, Record<string, string>>(
     () => parser(content),
-    (e) => (e instanceof Error ? e : new Error('Unknown Error'))
+    (e) => (e instanceof Error ? e : new Error('Error: Unknown Error'))
   );
 }
 
-function readFileByPredicate(dirPath: string, predicate: Predicate<string>) {
+function readTranslationFileByPredicate(
+  dirPath: string,
+  predicate: Predicate<string>
+) {
   return pipe(
     dirPath,
     getSupportedFilePathsWithExtension,
     A.filter(({ filePath }) => predicate(filePath)),
     A.last,
     E.fromOption(
-      () => new Error('Error: files.ts readFileByPredicate something wrong.')
+      () =>
+        new Error(
+          'Error: files.ts readTranslationFileByPredicate something wrong.'
+        )
     ),
     E.chain(({ filePath, ext }) =>
-      readFileByExtension({
+      readTranslationFileByExtension({
         filePath: path.join(dirPath, filePath),
         ext,
       })
@@ -101,12 +107,12 @@ function readFileByPredicate(dirPath: string, predicate: Predicate<string>) {
   );
 }
 
-function readFiles(dirPath: string) {
+function readTranslationFiles(dirPath: string) {
   return pipe(
     dirPath,
     getSupportedFilePathsWithExtension,
     A.map(({ filePath, ext }) =>
-      readFileByExtension({
+      readTranslationFileByExtension({
         filePath: path.join(dirPath, filePath),
         ext,
       })
@@ -148,12 +154,12 @@ function getTranslationFolderPath(
   return getDestinationPath(metaUrl, relativePath);
 }
 
-type Result = ReturnType<typeof readFiles>;
+type Result = ReturnType<typeof readTranslationFiles>;
 
 export {
   type Result,
-  readFiles,
-  readFileByPredicate,
+  readTranslationFiles,
+  readTranslationFileByPredicate,
   getTranslationFolderPath,
   getFileNames,
   getDestinationPath,

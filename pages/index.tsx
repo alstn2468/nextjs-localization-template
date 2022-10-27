@@ -1,9 +1,5 @@
-import { pipe } from 'fp-ts/lib/function';
 import { type GetStaticProps } from 'next';
-import {
-  getFileNames,
-  getTranslationFolderPath,
-} from '~/scripts/files';
+import { getAllLocales } from '~/utils/translation';
 import useRedirectLocalePage from '~/hooks/useRedirectLocalePage';
 
 type Props = {
@@ -17,10 +13,7 @@ function Root(props: Props) {
 }
 
 const getStaticProps: GetStaticProps<Props> = async () => {
-  const locales = pipe(
-    getTranslationFolderPath(import.meta.url),
-    getFileNames,
-  );
+  const locales = getAllLocales();
   return { props: { locales } };
 };
 
