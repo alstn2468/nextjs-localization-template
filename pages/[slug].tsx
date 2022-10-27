@@ -8,7 +8,6 @@ import {
   getTranslationFolderPath,
   readFileByPredicate,
 } from '~/scripts/files';
-import { useTranslation } from '~/context/L10nContext';
 import styles from '~/styles/Page.module.css';
 import OpenGraph from '~/components/OpenGraph';
 import Title from '~/components/Title';
