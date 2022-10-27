@@ -1,34 +1,52 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Next.js Localization Template
 
-## Getting Started
+> 🌐 Next.js localization template without i18next (Support translation key typegen)
 
-First, run the development server:
+## Demo
 
-```bash
-npm run dev
-# or
-yarn dev
+When access root(`/`) route, navigate to the page according to each browser settings language.
+
+|                       English                       |                       Korean                       |
+| :-------------------------------------------------: | :------------------------------------------------: |
+| ![When browser language is in English](docs/en.gif) | ![When browser language is in Korean](docs/ko.gif) |
+
+## Support for auto complete of translation keys
+
+Running `yarn dev` will generate `__generated__/translation.d.ts` file.
+
+### Usage `useTranslation` Hook
+
+You can use the translation function by calling the `useTranslation` hook to get a function.
+
+```typescript
+function Hello() {
+  const t = useTranslation();
+  return <h1>{t('hello')}</h1>;
+}
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### Auto complete Demo
 
-You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
+A type is created by combining the translation key values ​​for each language in the translation file.
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.ts`.
+![Auto complete Demo](docs/autocomplete.gif)
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+## Supported File Extension
 
-## Learn More
+> Details of the code can be found [here](https://github.com/alstn2468/nextjs-localization-template/blob/main/scripts/files.ts).
 
-To learn more about Next.js, take a look at the following resources:
+This template supports `json`, `yaml`, `yml` as a translation file extension.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Why not use i18next
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+> _I will probably use [next-i18next](https://github.com/i18next/next-i18next) in production._
 
-## Deploy on Vercel
+- Trying to learn Next.js
+- Because it's fun
+- For automatic completion of the translation key
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+<div align="center">
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+<sub><sup>Written by <a href="https://github.com/alstn2468">@Minsu Kim</a></sup></sub><small>✌</small>
+
+</div>
