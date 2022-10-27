@@ -9,8 +9,8 @@ import {
   getFileNames,
   getTranslationFolder,
   readFileByPredicate,
-} from '../scripts/files';
-import { useLocale, useTranslation } from '../context/L10nContext';
+} from '~/scripts/files';
+import { useTranslation } from '~/context/L10nContext';
 
 interface Params extends ParsedUrlQuery {
   slug: string,

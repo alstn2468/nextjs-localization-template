@@ -1,8 +1,8 @@
 import '../styles/globals.css';
 import type { AppProps } from 'next/app';
 
-import Layout from '../components/Layout';
-import { type L10nContextType } from '../context/L10nContext';
+import Layout from '~/components/Layout';
+import { type L10nContextType } from '~/context/L10nContext';
 
 interface PageProps extends L10nContextType {
 
