@@ -17,10 +17,10 @@
   ],
   "license": "MIT",
   "scripts": {
-    "translation:gen": "node --experimental-specifier-resolution=node --loader ts-node/esm ./scripts/index.ts",
-    "dev": "next dev",
-    "build": "next build",
-    "start": "next start",
+    "translation:typegen": "node --experimental-specifier-resolution=node --loader ts-node/esm ./scripts/index.ts",
+    "dev": "yarn translation:typegen && next dev",
+    "build": "yarn translation:typegen && next build",
+    "start": "yarn translation:typegen && next start",
     "lint": "next lint",
     "prepare": "husky install"
   },

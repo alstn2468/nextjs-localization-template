@@ -5,7 +5,7 @@ import { type ParsedUrlQuery } from 'querystring';
 import { type GetStaticProps, type GetStaticPaths } from 'next';
 import {
   getFileNames,
-  getTranslationFolder,
+  getTranslationFolderPath,
   readFileByPredicate,
 } from '~/scripts/files';
 import { useTranslation } from '~/context/L10nContext';
@@ -26,7 +26,6 @@ interface Props {
 }
 
 const TranslatedPage = (props: Props) => {
-  const t = useTranslation();
   return (
     <div className={styles.container}>
       <OpenGraph />
@@ -43,7 +42,7 @@ const TranslatedPage = (props: Props) => {
 const getStaticPaths: GetStaticPaths = async () => {
   return {
     paths: pipe(
-      getTranslationFolder(import.meta.url),
+      getTranslationFolderPath(import.meta.url),
       getFileNames,
       map((fileName) => ({ params: { slug: fileName } })),
     ),
@@ -57,7 +56,7 @@ const getStaticProps: GetStaticProps<Props, Params> = async (context) => {
   if (params?.slug) {
     const { slug } = params;
     const translations = readFileByPredicate(
-      getTranslationFolder(import.meta.url),
+      getTranslationFolderPath(import.meta.url),
       (filePath) => filePath.includes(slug),
     );
 

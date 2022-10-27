@@ -89,11 +89,15 @@ function readFileByPredicate(dirPath: string, predicate: Predicate<string>) {
     getSupportedFilePathsWithExtension,
     A.filter(({ filePath }) => predicate(filePath)),
     A.last,
-    E.fromOption(() => new Error('Error: files.ts readFileByPredicate something wrong.')),
-    E.chain(({ filePath, ext }) => readFileByExtension({
-      filePath: path.join(dirPath, filePath),
-      ext,
-    })),
+    E.fromOption(
+      () => new Error('Error: files.ts readFileByPredicate something wrong.')
+    ),
+    E.chain(({ filePath, ext }) =>
+      readFileByExtension({
+        filePath: path.join(dirPath, filePath),
+        ext,
+      })
+    )
   );
 }
 
@@ -110,11 +114,21 @@ function readFiles(dirPath: string) {
   );
 }
 
+function writeFile(filePath: string) {
+  return function (content: string) {
+    fs.mkdirSync(path.dirname(filePath), { recursive: true });
+    fs.writeFileSync(filePath, content, {
+      encoding: 'utf-8',
+      flag: 'w',
+    });
+  };
+}
+
 function getFileNames(dirPath: string) {
   return pipe(
     dirPath,
     getSupportedFilePathsWithExtension,
-    A.map(({ filePath, ext }) => getFileName(filePath, ext)),
+    A.map(({ filePath, ext }) => getFileName(filePath, ext))
   );
 }
 
@@ -123,8 +137,15 @@ function getDirName(metaUrl: string) {
   return path.dirname(__filename);
 }
 
-function getTranslationFolder(metaUrl: string, relativePath = '../translations') {
+function getDestinationPath(metaUrl: string, relativePath: string) {
   return path.join(getDirName(metaUrl), relativePath);
+}
+
+function getTranslationFolderPath(
+  metaUrl: string,
+  relativePath = '../translations'
+) {
+  return getDestinationPath(metaUrl, relativePath);
 }
 
 type Result = ReturnType<typeof readFiles>;
@@ -133,6 +154,8 @@ export {
   type Result,
   readFiles,
   readFileByPredicate,
+  getTranslationFolderPath,
   getFileNames,
-  getTranslationFolder,
+  getDestinationPath,
+  writeFile,
 };

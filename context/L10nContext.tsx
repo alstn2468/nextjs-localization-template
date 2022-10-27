@@ -2,8 +2,8 @@ import { type PropsWithChildren, createContext, useContext } from 'react';
 
 interface L10nContextType {
   locale: string;
-  translations: Record<string, string>;
-  t: (key: string) => string;
+  translations: Record<TransltaionKeys, string>;
+  t: (key: TransltaionKeys) => string;
 }
 
 const L10nContext = createContext<L10nContextType | null>(null);

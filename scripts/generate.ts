@@ -34,7 +34,8 @@ function getTranslationKeyTypes(keys: string[]) {
 }
 
 function getTranslationKeyTypeString(keys: string[]) {
-  return `
+  return `/* eslint-disable */
+    // @ts-ignore
     export {};
     declare global {
       type TransltaionKeys =
