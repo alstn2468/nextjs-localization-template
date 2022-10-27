@@ -1,16 +1,22 @@
-import A from 'fp-ts/lib/Array';
-import O from 'fp-ts/lib/Option';
-import E from 'fp-ts/lib/Either';
+import * as A from 'fp-ts/lib/Array';
+import * as O from 'fp-ts/lib/Option';
+import * as E from 'fp-ts/lib/Either';
 import fs from 'fs';
 import path from 'path';
 import yaml from 'js-yaml';
+import { fileURLToPath } from 'url';
 import { identity, pipe } from 'fp-ts/lib/function';
+import { type Predicate } from 'fp-ts/lib/Predicate';
 
 const supportedExtension = ['yml', 'yaml', 'json'] as const;
 type SupportedExtension = typeof supportedExtension[number];
 
 function isDirectory(dirPath: string) {
   return fs.lstatSync(dirPath).isDirectory();
+}
+
+function getFileName(filePath: string, extension?: string) {
+  return path.basename(filePath, extension).replace(/[^a-zA-Z ]/g, '');
 }
 
 function getFileExtension(filePath: string) {
@@ -77,6 +83,20 @@ function readFileByExtension(file: {
   );
 }
 
+function readFileByPredicate(dirPath: string, predicate: Predicate<string>) {
+  return pipe(
+    dirPath,
+    getSupportedFilePathsWithExtension,
+    A.filter(({ filePath }) => predicate(filePath)),
+    A.last,
+    E.fromOption(() => new Error('Error: files.ts readFileByPredicate something wrong.')),
+    E.chain(({ filePath, ext }) => readFileByExtension({
+      filePath: path.join(dirPath, filePath),
+      ext,
+    })),
+  );
+}
+
 function readFiles(dirPath: string) {
   return pipe(
     dirPath,
@@ -90,7 +110,29 @@ function readFiles(dirPath: string) {
   );
 }
 
+function getFileNames(dirPath: string) {
+  return pipe(
+    dirPath,
+    getSupportedFilePathsWithExtension,
+    A.map(({ filePath, ext }) => getFileName(filePath, ext)),
+  );
+}
+
+function getDirName(metaUrl: string) {
+  const __filename = fileURLToPath(metaUrl);
+  return path.dirname(__filename);
+}
+
+function getTranslationFolder(metaUrl: string, relativePath = '../translations') {
+  return path.join(getDirName(metaUrl), relativePath);
+}
+
 type Result = ReturnType<typeof readFiles>;
 
-export default readFiles;
-export { type Result };
+export {
+  type Result,
+  readFiles,
+  readFileByPredicate,
+  getFileNames,
+  getTranslationFolder,
+};

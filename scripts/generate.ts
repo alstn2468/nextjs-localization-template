@@ -1,9 +1,9 @@
-import A from 'fp-ts/lib/Array';
-import E from 'fp-ts/lib/Either';
-import R from 'fp-ts/lib/Record';
+import * as A from 'fp-ts/lib/Array';
+import * as E from 'fp-ts/lib/Either';
+import * as R from 'fp-ts/lib/Record';
 import { pipe } from 'fp-ts/lib/function';
 
-import { type Result } from './readFiles';
+import { type Result } from './files';
 
 function mergeEitherObjects(
   objects: E.Either<Error, Record<string, string>>[]
@@ -52,4 +52,4 @@ function getTranslationKeyType(readFileResults: Result) {
   );
 }
 
-export default getTranslationKeyType;
+export { getTranslationKeyType };

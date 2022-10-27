@@ -1,18 +1,16 @@
-import url from 'url';
-import path from 'path';
 import { pipe } from 'fp-ts/lib/function';
 import { log } from 'fp-ts/lib/Console';
 
-import readFiles from './readFiles';
-import getTranslationKeyType from './getTranslationKeyType';
-
-function getTranslationFolder(relativePath: string = '../translations') {
-  const __dirname = url.fileURLToPath(new URL('.', import.meta.url));
-  return path.join(__dirname, relativePath);
-}
+import { getTranslationFolder, readFiles } from './files';
+import { getTranslationKeyType } from './generate';
 
 function run() {
-  return pipe(getTranslationFolder(), readFiles, getTranslationKeyType, log)();
+  return pipe(
+    getTranslationFolder(import.meta.url),
+    readFiles,
+    getTranslationKeyType,
+    log
+  )();
 }
 
 run();
