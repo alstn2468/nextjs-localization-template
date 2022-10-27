@@ -20,7 +20,7 @@ const data = [
     link: 'https://vercel.com/new?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app',
     translationPrefix: 'deploy',
   },
-];
+] as const;
 
 function Grid() {
   const t = useTranslation();
