@@ -20,6 +20,9 @@ interface Params extends ParsedUrlQuery {
 }
 
 interface Props {
+}
+
+interface GetStaticPropsResult extends Props {
   locale: string,
   translations: Record<string, string>,
 }
@@ -49,7 +52,9 @@ const getStaticPaths: GetStaticPaths = async () => {
   };
 };
 
-const getStaticProps: GetStaticProps<Props, Params> = async (context) => {
+const getStaticProps: GetStaticProps<GetStaticPropsResult, Params> = async (
+  context,
+) => {
   const { params } = context;
 
   if (params?.slug) {

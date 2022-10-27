@@ -5,7 +5,7 @@ type Props = PropsWithChildren & Omit<L10nContextType, 't'>
 
 function Layout(props: Props) {
   const { children, locale, translations } = props;
-  const t = useCallback((key: string) => {
+  const t = useCallback((key: TransltaionKeys) => {
     return translations[key] ?? `⚠️ ${key}`;
   }, [translations]);
   return (
